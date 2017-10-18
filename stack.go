@@ -9,7 +9,7 @@ type Stack struct {
 	stack *list.List
 }
 
-//NewStack - creates a new stack
+//Create a new stack
 func NewStack() *Stack {
 	return &Stack{stack: list.NewList()}
 }
@@ -32,7 +32,7 @@ func (o *Stack) Pop() interface{} {
 	return o.stack.Pop()
 }
 
-//First item infront
+//First item in front
 func (o *Stack) First() interface{} {
 	return o.stack.Last()
 }
