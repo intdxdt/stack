@@ -2,8 +2,8 @@ package stack
 
 import (
 	"fmt"
-	"testing"
 	"github.com/franela/goblin"
+	"testing"
 )
 
 func TestStack(t *testing.T) {
