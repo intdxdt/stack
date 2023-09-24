@@ -11,7 +11,7 @@ func TestStack(t *testing.T) {
 
 	g.Describe("Stack", func() {
 		var array = []int{9, 5, 3, 2, 8, 1, 2, 3}
-		var obj = NewStack().Push(array[0], array[1])
+		var obj = NewStack[int]().Push(array[0], array[1])
 
 		for _, v := range array[2:] {
 			obj.Push(v)
@@ -20,24 +20,34 @@ func TestStack(t *testing.T) {
 		fmt.Println(obj)
 
 		g.It("should test items in the queue", func() {
+			var panics = 0
+			var panicFn = func() {
+				if err := recover(); err != nil {
+					panics += 1
+				}
+			}
 			g.Assert(obj.IsEmpty()).IsFalse()
 			g.Assert(obj.Size()).Equal(len(array))
-			g.Assert(obj.First().(int)).Equal(3)
-			g.Assert(obj.Top().(int)).Equal(3)
-			g.Assert(obj.Pop().(int)).Equal(3)
-			g.Assert(obj.Pop().(int)).Equal(2)
-			g.Assert(obj.Pop().(int)).Equal(1)
-			g.Assert(obj.Pop().(int)).Equal(8)
+			g.Assert(obj.First()).Equal(3)
+			g.Assert(obj.Top()).Equal(3)
+			g.Assert(obj.Pop()).Equal(3)
+			g.Assert(obj.Pop()).Equal(2)
+			g.Assert(obj.Pop()).Equal(1)
+			g.Assert(obj.Pop()).Equal(8)
 
-			g.Assert(obj.First().(int)).Equal(2)
-			g.Assert(obj.Top().(int)).Equal(2)
-			g.Assert(obj.Last().(int)).Equal(9)
+			g.Assert(obj.First()).Equal(2)
+			g.Assert(obj.Top()).Equal(2)
+			g.Assert(obj.Last()).Equal(9)
 
 			fmt.Println(obj)
 
 			obj.Empty()
-			g.Assert(obj.Pop()).Equal(nil)
 			g.Assert(obj.IsEmpty()).IsTrue()
+			func() {
+				defer panicFn()
+				obj.Pop() //panic
+			}()
+			g.Assert(panics == 1).IsTrue()
 			//print
 			fmt.Println(obj)
 		})
